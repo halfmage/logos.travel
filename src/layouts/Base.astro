@@ -1,0 +1,188 @@
+---
+import type { Metadata } from '../types';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import SearchBar from '../components/SearchBar';
+import { getCollection } from 'astro:content';
+import { AstroFont } from 'astro-font';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const metadata: Metadata = {
+  title: 'logos.travel',
+  url: 'https://logos.travel/',
+  language: 'en',
+  description: 'Browse and download logos from airlines, hotels, tourism boards, and more. logos.travel is a curated directory of travel-related brand logos, free to access and easy to use.',
+  author: {
+    name: 'Gerrit Halfmann',
+    email: 'gerrit@gerrithalfmann.com',
+    url: 'https://halfmage.com',
+  },
+};
+
+const { title, description } = Astro.props;
+const pageTitle = title ? `${title} — logos.travel` : 'logos.travel — Find and Download Travel Brand Logos Instantly';
+const pageDescription = description || metadata.description;
+
+// Prepare search data
+const logos = await getCollection('logos');
+const slugifyTag = (tag: string): string => {
+  return tag
+    .replace(/[^\w\s-]/g, '') // Remove emojis and special chars
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/--+/g, '-');
+};
+
+const logoEntries = logos.map((logo) => {
+  const idParts = logo.id.split('/');
+  const simpleId = idParts.length > 1 ? idParts[0] : logo.id;
+  return {
+    type: 'logo' as const,
+    title: logo.data.name,
+    id: simpleId,
+    url: `/logos/${simpleId}/`,
+  };
+});
+
+const allTags = new Set<string>();
+logos.forEach(logo => {
+  if (logo.data.tags) {
+    logo.data.tags.forEach(tag => allTags.add(tag));
+  }
+});
+
+const tagEntries = Array.from(allTags).map((tag) => ({
+  type: 'tag' as const,
+  title: tag,
+  url: `/tags/${slugifyTag(tag)}/`,
+}));
+
+const searchData = {
+  logos: logoEntries,
+  tags: tagEntries,
+};
+---
+
+<!doctype html>
+<html lang={metadata.language}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={metadata.url} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <AstroFont
+      config={[
+        {
+          name: "Manrope",
+          src: [
+            {
+              style: "normal",
+              weight: "400",
+              path: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRggexSd-fed4vYI.woff2",
+            },
+            {
+              style: "normal",
+              weight: "500",
+              path: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRggexSd-fed4vYI.woff2",
+            },
+            {
+              style: "normal",
+              weight: "600",
+              path: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRggexSd-fed4vYI.woff2",
+            },
+            {
+              style: "normal",
+              weight: "700",
+              path: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRggexSd-fed4vYI.woff2",
+            },
+          ],
+          preload: true,
+          display: "swap",
+          selector: "body",
+          fallback: "sans-serif",
+        },
+      ]}
+    />
+    <script is:inline>
+      const getThemePreference = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+      const isDark = getThemePreference() === 'dark';
+      document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
+
+      if (typeof localStorage !== 'undefined') {
+        const observer = new MutationObserver(() => {
+          const isDark = document.documentElement.classList.contains('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      }
+    </script>
+    <script is:inline define:vars={{ searchData }}>
+      window.__SEARCH_DATA__ = searchData;
+    </script>
+  </head>
+  <body class="bg-background text-foreground">
+    <header class="border-b border-border">
+      <div class="max-w-5xl mx-auto px-4 py-4">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
+          <a href="/" class="text-xl font-bold text-foreground hover:text-primary transition-colors">
+            🌍 {metadata.title}
+          </a>
+          <nav>
+            <ul class="flex items-center gap-3 md:gap-6 flex-wrap justify-center">
+              <li>
+                <a href="/" class="text-muted-foreground hover:text-foreground transition-colors">🏠 Home</a>
+              </li>
+              <li>
+                <a href="/logos/" class="text-muted-foreground hover:text-foreground transition-colors">🍱 Logos</a>
+              </li>
+              <li>
+                <a href="/tags/" class="text-muted-foreground hover:text-foreground transition-colors">🏷️ Tags</a>
+              </li>
+              <li>
+                <a href="/about/" class="text-muted-foreground hover:text-foreground transition-colors">❇️ About</a>
+              </li>
+              <li>
+                <ThemeToggle />
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="flex justify-center w-full">
+          <SearchBar client:load />
+        </div>
+      </div>
+    </header>
+    <main class="max-w-5xl mx-auto px-4 py-8">
+      <slot />
+    </main>
+
+    <footer class="mt-16 py-8 border-t border-border">
+      <div class="max-w-5xl mx-auto px-4 py-4">
+        <p class="text-sm text-muted-foreground text-center">
+          logos.travel is the simple way to explore, reference, and download logos from global travel brands. Designed for speed and clarity, it's your go-to resource for finding professional travel brand assets all in one place.
+        </p>
+      </div>
+    </footer>
+
+    <!-- 100% privacy-first analytics -->
+    <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+  </body>
+</html>

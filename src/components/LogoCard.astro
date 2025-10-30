@@ -1,0 +1,23 @@
+---
+import { Card, CardContent } from '@/components/ui/card';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  logo: CollectionEntry<'logos'>;
+}
+
+const { logo } = Astro.props;
+const logoId = logo.id.includes('/') ? logo.id.split('/')[0] : logo.id;
+---
+
+<Card class="hover:shadow-lg transition-shadow">
+  <a href={`/logos/${logoId}/`} class="block">
+    <CardContent class="p-6 flex flex-col items-center">
+      <div class="w-full h-40 mb-3 flex items-center justify-center">
+        <img src={`/logos/${logoId}.svg`} alt={logo.data.name} class="max-w-full max-h-full object-contain" />
+      </div>
+      <div class="text-lg font-bold mb-2 text-foreground">{logo.data.name}</div>
+    </CardContent>
+  </a>
+</Card>
+

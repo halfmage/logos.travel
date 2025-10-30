@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/Base.astro';
+import LogoCard from '../../components/LogoCard.astro';
+
+const logos = await getCollection('logos');
+---
+
+<BaseLayout 
+  title="All Travel Logos"
+  description="Explore logos from leading travel brands around the world. Each logo is available in clean black and white versions, ready for download."
+>
+  <h1 class="text-3xl font-bold mb-6 text-foreground">All Travel Logos</h1>
+  
+  <p class="text-lg text-muted-foreground mb-8 max-w-3xl">
+    Explore logos from leading travel brands around the world. Each logo is available in clean black and white versions, ready for download — perfect for presentations, design mockups, or marketing materials.
+  </p>
+
+  <ol class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {logos
+      .sort((a, b) => a.data.name.localeCompare(b.data.name))
+      .map((logo) => (
+        <li>
+          <LogoCard logo={logo} />
+        </li>
+      ))}
+  </ol>
+</BaseLayout>

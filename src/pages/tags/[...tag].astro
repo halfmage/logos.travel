@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/Base.astro';
+import { Button } from '@/components/ui/button';
+import LogoCard from '../../components/LogoCard.astro';
+
+export async function getStaticPaths() {
+  const logos = await getCollection('logos');
+  
+  // Create a slug from tag (remove emojis and special chars, lowercase, replace spaces with hyphens)
+  const slugifyTag = (tag: string): string => {
+    return tag
+      .replace(/[^\w\s-]/g, '') // Remove emojis and special chars
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/--+/g, '-');
+  };
+  
+  // Get all unique tags
+  const allTags = new Set<string>();
+  logos.forEach(logo => {
+    if (logo.data.tags) {
+      logo.data.tags.forEach(tag => allTags.add(tag));
+    }
+  });
+
+  return Array.from(allTags).map(tag => ({
+    params: { 
+      tag: slugifyTag(tag),
+    },
+    props: { 
+      tag,
+      logos: logos.filter(logo => logo.data.tags?.includes(tag)),
+    },
+  }));
+}
+
+interface Props {
+  tag: string;
+  logos: any[];
+}
+
+const { tag, logos: taggedLogos } = Astro.props;
+---
+
+<BaseLayout 
+  title={`${tag} Logos`}
+  description={`Explore ${tag.toLowerCase()} logos from leading travel brands around the world. Each logo is available in clean black and white versions, ready for download.`}
+>
+  <h1 class="text-3xl font-bold mb-6 text-foreground">{tag} Logos</h1>
+  
+  <p class="text-lg text-muted-foreground mb-8 max-w-3xl">
+    Explore {tag.toLowerCase()} logos from leading travel brands around the world. Each logo is available in clean black and white versions, ready for download — perfect for presentations, design mockups, or marketing materials.
+  </p>
+
+  <ol class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {taggedLogos
+      .sort((a, b) => a.data.name.localeCompare(b.data.name))
+      .map((logo) => (
+        <li>
+          <LogoCard logo={logo} />
+        </li>
+      ))}
+  </ol>
+
+  <div class="mt-8 text-center">
+    <Button href="/tags/" variant="link">
+      ← All Tags
+    </Button>
+  </div>
+</BaseLayout>

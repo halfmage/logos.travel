@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { Button } from '@/components/ui/button';
+import LogoCard from '../components/LogoCard.astro';
+
+const logos = await getCollection('logos');
+const latestLogos = logos.sort((a, b) => 
+  a.data.name.localeCompare(b.data.name)
+).slice(0, 6);
+---
+
+<BaseLayout 
+  title="Find and Download Travel Brand Logos Instantly"
+  description="logos.travel is a curated directory of travel-related company logos — from airlines and hotels to tourism boards and travel tech brands. Browse by category, discover clean versions, and download instantly in black or white."
+>
+  <!-- Hero Section -->
+  <section class="text-center py-12 mb-12">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-foreground">Find & Download Travel <br> Brand Logos Instantly</h1>
+    <p class="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
+      logos.travel is a curated directory of travel-related company logos — from airlines and hotels to tourism boards and travel tech brands. Browse by category, discover clean versions, and download instantly in black or white.
+    </p>
+    <Button href="/logos/" size="lg">
+      👉 Browse All Logos
+    </Button>
+  </section>
+
+  <!-- Latest Logos -->
+  <section class="mb-12">
+    <ol class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {latestLogos.map((logo) => (
+        <li>
+          <LogoCard logo={logo} />
+        </li>
+      ))}
+    </ol>
+
+    {logos.length > latestLogos.length && (
+      <div class="text-center mt-6">
+        <Button href="/logos/" variant="link">
+          View all {logos.length} logos →
+        </Button>
+      </div>
+    )}
+  </section>
+
+  <!-- Short Intro -->
+  <section class="mb-12">
+    <p class="text-lg text-muted-foreground max-w-3xl mx-auto">
+      logos.travel makes it easy to find and download official logos from across the travel industry. Whether you're a designer, marketer, or travel professional, our growing collection helps you access the visuals you need — quickly and without registration.
+    </p>
+  </section>
+
+  <!-- Key Highlights -->
+  <section class="mb-12">
+    <ul class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+      <li class="flex items-start gap-3">
+        <span class="text-2xl">✈️</span>
+        <div>
+          <strong class="text-foreground">All travel sectors</strong> – airlines, hotels, tourism boards, cruises, agencies, and more
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="text-2xl">🎨</span>
+        <div>
+          <strong class="text-foreground">Clean logo files</strong> – available in black and white for consistent use
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="text-2xl">⚡</span>
+        <div>
+          <strong class="text-foreground">Instant access</strong> – no account or form required
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <span class="text-2xl">🔍</span>
+        <div>
+          <strong class="text-foreground">Simple navigation</strong> – search by company name or category
+        </div>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>

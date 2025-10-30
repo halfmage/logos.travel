@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/Base.astro';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+
+const logos = await getCollection('logos');
+
+// Get all unique tags with counts
+const tagMap = new Map<string, number>();
+logos.forEach(logo => {
+  if (logo.data.tags) {
+    logo.data.tags.forEach(tag => {
+      tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+    });
+  }
+});
+
+// Create a slug from tag
+function slugifyTag(tag: string): string {
+  return tag
+    .replace(/[^\w\s-]/g, '') // Remove emojis and special chars
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/--+/g, '-');
+}
+
+// Sort tags by count (descending), then alphabetically
+const sortedTags = Array.from(tagMap.entries())
+  .sort((a, b) => {
+    if (b[1] !== a[1]) return b[1] - a[1]; // By count
+    return a[0].localeCompare(b[0]); // Then alphabetically
+  });
+---
+
+<BaseLayout 
+  title="Browse by Tag"
+  description="Browse travel brand logos by category on logos.travel. Explore airlines, hotels, tourism boards, and more."
+>
+  <h1 class="text-3xl font-bold mb-6 text-foreground">Browse by Tag</h1>
+  
+  <p class="text-lg text-muted-foreground mb-8 max-w-3xl">
+    Explore logos organized by category. Click on any tag to see all logos in that category.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {sortedTags.map(([tag, count]) => (
+      <Card class="hover:shadow-lg transition-shadow">
+        <a href={`/tags/${slugifyTag(tag)}/`} class="block">
+          <CardContent class="p-6">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xl font-semibold text-foreground">{tag}</span>
+              <Badge variant="secondary">{count}</Badge>
+            </div>
+            <p class="text-sm text-muted-foreground">
+              {count} logo{count !== 1 ? 's' : ''}
+            </p>
+          </CardContent>
+        </a>
+      </Card>
+    ))}
+  </div>
+</BaseLayout>

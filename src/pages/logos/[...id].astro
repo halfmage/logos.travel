@@ -1,0 +1,150 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/Base.astro';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+
+// Helper function to slugify tags
+function slugifyTag(tag: string): string {
+  return tag
+    .replace(/[^\w\s-]/g, '') // Remove emojis and special chars
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/--+/g, '-');
+}
+
+export async function getStaticPaths() {
+  const logos = await getCollection('logos');
+  return logos.map((logo) => {
+    // Extract just the folder name from nested IDs (e.g., "lufthansa/lufthansa" -> "lufthansa")
+    const idParts = logo.id.split('/');
+    const simpleId = idParts.length > 1 ? idParts[0] : logo.id;
+    
+    return {
+      params: { id: simpleId },
+      props: { logo },
+    };
+  });
+}
+
+interface Props {
+  logo: CollectionEntry<'logos'>;
+}
+
+const { logo } = Astro.props;
+// Extract just the folder name from nested IDs (e.g., "lufthansa/lufthansa" -> "lufthansa")
+const logoId = logo.id.includes('/') ? logo.id.split('/')[0] : logo.id;
+const logoData = logo.data;
+
+// Get next and previous logos
+const allLogos = await getCollection('logos');
+const sortedLogos = allLogos.sort((a, b) => 
+  a.data.name.localeCompare(b.data.name)
+);
+const currentIndex = sortedLogos.findIndex(l => {
+  const lId = l.id.includes('/') ? l.id.split('/')[0] : l.id;
+  return lId === logoId;
+});
+const previousLogo = currentIndex > 0 ? sortedLogos[currentIndex - 1] : null;
+const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentIndex + 1] : null;
+---
+
+<BaseLayout 
+  title={`${logoData.name} Logo`} 
+  description={`Download ${logoData.name} logo in SVG format. Available in original, black, and white versions on logos.travel.`}
+>
+
+  <div class="logo-showcase">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <Card>
+        <CardContent class="flex flex-col items-center">
+          <h3 class="text-lg font-semibold mb-4 text-foreground">Original</h3>
+          <div class="p-6 rounded-xl mb-4 flex items-center justify-center min-h-[100px]">
+            <img src={`/logos/${logoId}.svg`} alt={`${logoData.name} logo`} class="max-w-full max-h-[100px]" />
+          </div>
+          <Button href={`/logos/${logoId}.svg`} download={`${logoId}.svg`}>
+            Download SVG
+          </Button>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardContent class="flex flex-col items-center">
+          <h3 class="text-lg font-semibold mb-4 text-foreground">Black</h3>
+          <div class="p-6 rounded-xl mb-4 flex items-center justify-center min-h-[100px] bg-background dark:bg-foreground">
+            <img src={`/logos/${logoId}-black.svg`} alt={`${logoData.name} logo black`} class="max-w-full max-h-[100px]" />
+          </div>
+          <Button href={`/logos/${logoId}-black.svg`} download={`${logoId}-black.svg`} variant="outline">
+            Download SVG
+          </Button>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardContent class="flex flex-col items-center">
+          <h3 class="text-lg font-semibold mb-4 text-foreground">White</h3>
+          <div class="p-6 rounded-xl mb-4 flex items-center justify-center min-h-[100px] bg-foreground dark:bg-background">
+            <img src={`/logos/${logoId}-white.svg`} alt={`${logoData.name} logo white`} class="max-w-full max-h-[100px]" />
+          </div>
+          <Button href={`/logos/${logoId}-white.svg`} download={`${logoId}-white.svg`} variant="outline">
+            Download SVG
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+
+  <hr class="my-8 border-border">
+
+  <Card>
+    <CardHeader>
+      <CardTitle>{logoData.name}</CardTitle>
+      <p class="text-muted-foreground">{logoData.description}</p>
+    </CardHeader>
+    <CardFooter>
+      <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+        {logoData.country && (
+          <span>Country: {logoData.country}</span>
+        )}
+        {logoData.founded && (
+          <>
+            {logoData.country && (
+              <Separator orientation="vertical" class="h-4" />
+            )}
+            <span>Founded: {logoData.founded}</span>
+          </>
+        )}
+        {logoData.website && (
+          <>
+            {(logoData.country || logoData.founded) && (
+              <Separator orientation="vertical" class="h-4" />
+            )}
+            <a href={logoData.website} target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
+              Website
+            </a>
+          </>
+        )}
+        {logoData.tags && logoData.tags.length > 0 && (
+          <>
+            {(logoData.country || logoData.founded || logoData.website) && (
+              <Separator orientation="vertical" class="h-4" />
+            )}
+            <div class="flex flex-wrap gap-2">
+              {logoData.tags.map((tag) => (
+                <Badge variant="secondary">
+                  <a href={`/tags/${slugifyTag(tag)}/`} class="hover:underline">
+                    {tag}
+                  </a>
+                </Badge>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </CardFooter>
+  </Card>
+
+</BaseLayout>
