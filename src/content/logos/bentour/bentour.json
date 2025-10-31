@@ -1,0 +1,11 @@
+{
+  "name": "Bentour",
+  "description": "Norwegian tour operator providing travel packages and vacation services.",
+  "country": "Norway",
+  "tags": [
+    "🏖️ Tour Operator",
+    "🚚 Transportation"
+  ],
+  "website": "https://www.bentour.no"
+}
+

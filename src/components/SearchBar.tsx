@@ -133,7 +133,7 @@ export default function SearchBar() {
           }}
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
-          className="w-full pl-10 pr-4 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          className="w-full pl-10 pr-4 py-2 rounded-md border border-input bg-card text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           aria-label="Search companies or tags"
           aria-autocomplete="list"
           aria-expanded={isOpen}

@@ -41,6 +41,18 @@ export function logoProcessor(): AstroIntegration {
         // Generate variants
         processLogoVariants(svgPath, outputDir);
       }
+      
+      // Copy favicon file if it exists
+      const faviconFile = files.find(file => file === `${companyFolder}-favicon.svg`);
+      if (faviconFile) {
+        const faviconPath = join(companyPath, faviconFile);
+        const faviconOutputPath = join(outputDir, `${companyFolder}-favicon.svg`);
+        if (!existsSync(outputDir)) {
+          mkdirSync(outputDir, { recursive: true });
+        }
+        copyFileSync(faviconPath, faviconOutputPath);
+        console.log(`Copied favicon: ${companyFolder}-favicon.svg`);
+      }
     }
   };
 
