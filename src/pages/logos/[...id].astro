@@ -2,9 +2,8 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/Base.astro';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 
 // Helper function to slugify tags
 function slugifyTag(tag: string): string {
@@ -58,93 +57,208 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
 >
 
   <div class="logo-showcase">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <Card>
-        <CardContent class="flex flex-col items-center">
-          <h3 class="text-lg font-semibold mb-4 text-foreground">Original</h3>
-          <div class="p-6 rounded-xl mb-4 flex items-center justify-center min-h-[100px] border border-muted">
-            <img src={`/logos/${logoId}.svg`} alt={`${logoData.name} logo`} class="max-w-full max-h-[100px]" />
-          </div>
-          <Button href={`/logos/${logoId}.svg`} download={`${logoId}.svg`}>
-            Download SVG
-          </Button>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardContent class="flex flex-col items-center">
-          <h3 class="text-lg font-semibold mb-4 text-foreground">Black</h3>
-          <div class="p-6 rounded-xl mb-4 flex items-center justify-center min-h-[100px] bg-background dark:bg-foreground">
-            <img src={`/logos/${logoId}-black.svg`} alt={`${logoData.name} logo black`} class="max-w-full max-h-[100px]" />
-          </div>
-          <Button href={`/logos/${logoId}-black.svg`} download={`${logoId}-black.svg`} variant="outline">
-            Download SVG
-          </Button>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardContent class="flex flex-col items-center">
-          <h3 class="text-lg font-semibold mb-4 text-foreground">White</h3>
-          <div class="p-6 rounded-xl mb-4 flex items-center justify-center min-h-[100px] bg-foreground dark:bg-background">
-            <img src={`/logos/${logoId}-white.svg`} alt={`${logoData.name} logo white`} class="max-w-full max-h-[100px]" />
-          </div>
-          <Button href={`/logos/${logoId}-white.svg`} download={`${logoId}-white.svg`} variant="outline">
-            Download SVG
-          </Button>
-        </CardContent>
-      </Card>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Left Column: Logo Display -->
+      <div class="md:col-span-2 space-y-6">
+        <!-- Original Logo Card -->
+        <Card>
+          <CardContent>
+            <h3 class="text-xl font-semibold mb-4 text-foreground">Original</h3>
+            <div class="w-full mb-6 flex items-center justify-center min-h-[200px] border border-muted rounded-xl px-8 py-16 bg-background">
+              <img src={`/logos/${logoId}.svg`} alt={`${logoData.name} logo`} class="w-full max-h-[140px] object-contain" />
+            </div>
+            <div class="flex gap-2">
+              <Button href={`/logos/${logoId}.svg`} download={`${logoId}.svg`} className="flex-1">
+                Download SVG
+              </Button>
+              <Button 
+                data-svg-path={`/logos/${logoId}.svg`}
+                className="copy-svg-btn flex-1"
+                variant="outline"
+              >
+                Copy SVG Code
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <!-- Black Logo Card -->
+        <Card>
+          <CardContent>
+            <h3 class="text-lg font-semibold mb-4 text-foreground">Black</h3>
+            <div class="w-full mb-4 flex items-center justify-center min-h-[150px] bg-background dark:bg-foreground border border-muted rounded-xl p-6">
+              <img src={`/logos/${logoId}-black.svg`} alt={`${logoData.name} logo black`} class="w-full max-h-[100px] object-contain" />
+            </div>
+            <div class="flex gap-2">
+              <Button href={`/logos/${logoId}-black.svg`} download={`${logoId}-black.svg`} variant="outline" className="flex-1">
+                Download SVG
+              </Button>
+              <Button 
+                data-svg-path={`/logos/${logoId}-black.svg`}
+                className="copy-svg-btn flex-1"
+                variant="outline"
+              >
+                Copy SVG Code
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <!-- White Logo Card -->
+        <Card>
+          <CardContent>
+            <h3 class="text-lg font-semibold mb-4 text-foreground">White</h3>
+            <div class="w-full mb-4 flex items-center justify-center min-h-[150px] bg-foreground dark:bg-background border border-muted rounded-xl p-6">
+              <img src={`/logos/${logoId}-white.svg`} alt={`${logoData.name} logo white`} class="w-full max-h-[100px] object-contain" />
+            </div>
+            <div class="flex gap-2">
+              <Button href={`/logos/${logoId}-white.svg`} download={`${logoId}-white.svg`} variant="outline" className="flex-1">
+                Download SVG
+              </Button>
+              <Button 
+                data-svg-path={`/logos/${logoId}-white.svg`}
+                className="copy-svg-btn flex-1"
+                variant="outline"
+              >
+                Copy SVG Code
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <!-- Favicon Card -->
+        <Card>
+          <CardContent>
+            <h3 class="text-lg font-semibold mb-4 text-foreground">Favicon</h3>
+            <div class="w-full mb-4 flex items-center justify-center min-h-[150px] border border-muted rounded-xl p-6 bg-background">
+              <img src={`/logos/${logoId}-favicon.svg`} alt={`${logoData.name} favicon`} class="w-full max-h-[140px] object-contain" />
+            </div>
+            <div class="flex gap-2">
+              <Button href={`/logos/${logoId}-favicon.svg`} download={`${logoId}-favicon.svg`} variant="outline" className="flex-1">
+                Download SVG
+              </Button>
+              <Button 
+                data-svg-path={`/logos/${logoId}-favicon.svg`}
+                className="copy-svg-btn flex-1"
+                variant="outline"
+              >
+                Copy SVG Code
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <!-- Right Column: Company Info Sidebar -->
+      <div class="md:col-span-1">
+        <Card className="sticky top-4">
+          <CardHeader>
+            <CardTitle className="text-2xl">{logoData.name}</CardTitle>
+            {logoData.description && (
+              <p class="text-muted-foreground mt-2">{logoData.description}</p>
+            )}
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {logoData.country && (
+              <div>
+                <span class="text-sm font-medium text-muted-foreground">Country</span>
+                <p class="text-foreground">{logoData.country}</p>
+              </div>
+            )}
+            {logoData.founded && (
+              <div>
+                <span class="text-sm font-medium text-muted-foreground">Founded</span>
+                <p class="text-foreground">{logoData.founded}</p>
+              </div>
+            )}
+            {logoData.website && (
+              <div>
+                <a 
+                  href={logoData.website} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:scale-105 transition-transform h-10 px-4 py-2 w-full"
+                >
+                  Visit Website
+                </a>
+              </div>
+            )}
+            {logoData.tags && logoData.tags.length > 0 && (
+              <div class="pt-2">
+                <h3 class="text-lg font-semibold text-foreground mb-4">Tags</h3>
+                <div class="flex flex-wrap gap-3">
+                  {logoData.tags.map((tag) => (
+                    <Badge variant="default" className="text-base px-4 py-2">
+                      <a href={`/tags/${slugifyTag(tag)}/`} class="hover:underline">
+                        {tag}
+                      </a>
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   </div>
 
-  <hr class="my-8 border-border">
-
-  <Card>
-    <CardHeader>
-      <CardTitle>{logoData.name}</CardTitle>
-      <p class="text-muted-foreground">{logoData.description}</p>
-    </CardHeader>
-    <CardFooter>
-      <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-        {logoData.country && (
-          <span>Country: {logoData.country}</span>
-        )}
-        {logoData.founded && (
-          <>
-            {logoData.country && (
-              <Separator orientation="vertical" class="h-4" />
-            )}
-            <span>Founded: {logoData.founded}</span>
-          </>
-        )}
-        {logoData.website && (
-          <>
-            {(logoData.country || logoData.founded) && (
-              <Separator orientation="vertical" class="h-4" />
-            )}
-            <a href={logoData.website} target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
-              Website
-            </a>
-          </>
-        )}
-        {logoData.tags && logoData.tags.length > 0 && (
-          <>
-            {(logoData.country || logoData.founded || logoData.website) && (
-              <Separator orientation="vertical" class="h-4" />
-            )}
-            <div class="flex flex-wrap gap-2">
-              {logoData.tags.map((tag) => (
-                <Badge variant="secondary">
-                  <a href={`/tags/${slugifyTag(tag)}/`} class="hover:underline">
-                    {tag}
-                  </a>
-                </Badge>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-    </CardFooter>
-  </Card>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const copyButtons = document.querySelectorAll('.copy-svg-btn');
+      
+      copyButtons.forEach((buttonWrapper) => {
+        buttonWrapper.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Find the actual button element (could be the wrapper or nested)
+          const target = e.target as HTMLElement;
+          const buttonElement = target.closest('button') || target.querySelector('button') as HTMLButtonElement;
+          if (!buttonElement) return;
+          
+          const svgPath = buttonWrapper.getAttribute('data-svg-path');
+          if (!svgPath) return;
+          
+          try {
+            // Fetch the SVG file
+            const response = await fetch(svgPath);
+            const svgText = await response.text();
+            
+            // Copy to clipboard
+            await navigator.clipboard.writeText(svgText);
+            
+            // Visual feedback
+            const originalText = buttonElement.textContent || '';
+            buttonElement.textContent = 'Copied!';
+            buttonElement.style.backgroundColor = 'rgb(34, 197, 94)'; // green-500
+            buttonElement.style.color = 'white';
+            buttonElement.style.borderColor = 'rgb(34, 197, 94)';
+            
+            setTimeout(() => {
+              buttonElement.textContent = originalText;
+              buttonElement.style.backgroundColor = '';
+              buttonElement.style.color = '';
+              buttonElement.style.borderColor = '';
+            }, 2000);
+          } catch (error) {
+            console.error('Failed to copy SVG:', error);
+            const originalText = buttonElement.textContent || '';
+            buttonElement.textContent = 'Error';
+            buttonElement.style.backgroundColor = 'rgb(239, 68, 68)'; // red-500
+            buttonElement.style.color = 'white';
+            buttonElement.style.borderColor = 'rgb(239, 68, 68)';
+            
+            setTimeout(() => {
+              buttonElement.textContent = originalText;
+              buttonElement.style.backgroundColor = '';
+              buttonElement.style.color = '';
+              buttonElement.style.borderColor = '';
+            }, 2000);
+          }
+        });
+      });
+    });
+  </script>
 
 </BaseLayout>
