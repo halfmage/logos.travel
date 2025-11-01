@@ -1,7 +1,8 @@
 ---
 import type { Metadata } from '../types';
-import ThemeToggle from '../components/ThemeToggle.astro';
 import SearchBar from '../components/SearchBar';
+import TagsDropdown from '../components/TagsDropdown';
+import MobileMenu from '../components/MobileMenu';
 import { getCollection } from 'astro:content';
 import { AstroFont } from 'astro-font';
 import '@/styles/global.css';
@@ -62,6 +63,28 @@ const tagEntries = Array.from(allTags).map((tag) => ({
   url: `/tags/${slugifyTag(tag)}/`,
 }));
 
+// Calculate tag counts for dropdown
+const tagMap = new Map<string, number>();
+logos.forEach(logo => {
+  if (logo.data.tags) {
+    logo.data.tags.forEach(tag => {
+      tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+    });
+  }
+});
+
+// Sort tags by count (descending), then alphabetically
+const sortedTagsWithCounts = Array.from(tagMap.entries())
+  .sort((a, b) => {
+    if (b[1] !== a[1]) return b[1] - a[1]; // By count
+    return a[0].localeCompare(b[0]); // Then alphabetically
+  })
+  .map(([tag, count]) => ({
+    tag,
+    count,
+    url: `/tags/${slugifyTag(tag)}/`,
+  }));
+
 const searchData = {
   logos: logoEntries,
   tags: tagEntries,
@@ -116,56 +139,41 @@ const searchData = {
       ]}
     />
     <script is:inline>
-      const getThemePreference = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      };
-      const isDark = getThemePreference() === 'dark';
-      document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
-
-      if (typeof localStorage !== 'undefined') {
-        const observer = new MutationObserver(() => {
-          const isDark = document.documentElement.classList.contains('dark');
-          localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-      }
+      // Always use light mode - remove dark class if present
+      document.documentElement.classList.remove('dark');
     </script>
     <script is:inline define:vars={{ searchData }}>
       window.__SEARCH_DATA__ = searchData;
     </script>
   </head>
   <body class="bg-background text-foreground">
-    <header class="border-b border-border">
+    <header class="border-b border-border sticky top-0 bg-background z-50">
       <div class="max-w-5xl mx-auto px-4 py-4">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
-          <a href="/" class="text-xl font-bold text-foreground hover:text-primary transition-colors">
-            🌍 {metadata.title}
+        <div class="flex items-center justify-between gap-2 md:gap-4">
+          <a href="/" class="text-lg md:text-xl font-bold text-foreground hover:text-primary transition-colors whitespace-nowrap flex-shrink-0">
+            🌍 <span class="hidden sm:inline">{metadata.title}</span><span class="sm:hidden">logos.travel</span>
           </a>
-          <nav>
-            <ul class="flex items-center gap-3 md:gap-6 flex-wrap justify-center">
+          <div class="flex-1 flex justify-center max-w-xs md:max-w-md mx-2 md:mx-4 min-w-0">
+            <SearchBar client:load />
+          </div>
+          {/* Desktop Navigation */}
+          <nav class="hidden md:block flex-shrink-0">
+            <ul class="flex items-center gap-3 md:gap-4 justify-center">
               <li>
-                <a href="/" class="text-muted-foreground hover:text-foreground transition-colors">🏠 Home</a>
+                <a href="/" class="text-muted-foreground hover:text-foreground transition-colors">Home</a>
               </li>
               <li>
-                <a href="/logos/" class="text-muted-foreground hover:text-foreground transition-colors">🍱 Logos</a>
+                <a href="/logos/" class="text-muted-foreground hover:text-foreground transition-colors">Logos</a>
               </li>
               <li>
-                <a href="/tags/" class="text-muted-foreground hover:text-foreground transition-colors">🏷️ Tags</a>
-              </li>
-              <li>
-                <a href="/about/" class="text-muted-foreground hover:text-foreground transition-colors">❇️ About</a>
-              </li>
-              <li>
-                <ThemeToggle />
+                <TagsDropdown client:load tags={sortedTagsWithCounts} totalLogos={logos.length} />
               </li>
             </ul>
           </nav>
-        </div>
-        <div class="flex justify-center w-full">
-          <SearchBar client:load />
+          {/* Mobile Menu */}
+          <div class="md:hidden flex-shrink-0">
+            <MobileMenu client:load tags={sortedTagsWithCounts} totalLogos={logos.length} />
+          </div>
         </div>
       </div>
     </header>
@@ -173,10 +181,20 @@ const searchData = {
       <slot />
     </main>
 
-    <footer class="mt-16 py-8 border-t border-border">
+    <footer class="mt-16 py-8 border-t border-border bg-black text-white">
       <div class="max-w-5xl mx-auto px-4 py-4">
-        <p class="text-sm text-muted-foreground text-center">
-          logos.travel is the simple way to explore, reference, and download logos from global travel brands. Designed for speed and clarity, it's your go-to resource for finding professional travel brand assets all in one place.
+        <nav class="mb-4">
+          <ul class="flex items-center justify-center gap-4 flex-wrap">
+            <li>
+              <a href="/about/" class="text-sm hover:underline">About</a>
+            </li>
+            <li>
+              <a href="/terms-of-use/" class="text-sm hover:underline">Terms of Use</a>
+            </li>
+          </ul>
+        </nav>
+        <p class="text-sm text-white/50 text-center">
+          logos.travel is the simple way to explore, reference, and download logos from global travel brands. Designed for speed and clarity, it's your go-to resource for finding professional travel brand assets all in one place. All logos displayed on this website are not our intellectual property. The logos are the property of their respective owners and are protected by copyright, trademark, and other intellectual property laws.
         </p>
       </div>
     </footer>

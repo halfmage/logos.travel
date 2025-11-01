@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/Base.astro';
+import { Separator } from '@/components/ui/separator';
+---
+
+<BaseLayout 
+  title="Terms of Use"
+  description="Terms of use for logos.travel - a directory of travel-related brand logos"
+>
+  <article class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-foreground">Terms of Use</h1>
+    
+    <div class="prose prose-lg">
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">General</h2>
+        <p class="mb-4 text-muted-foreground">
+          This website is being operated by or on behalf of logos.travel. You may only use this website and its content for personal, non-commercial purposes. By visiting our website and downloading the displayed content, you agree with these terms of use. If you do not agree with, or do not wish to abide, these terms and conditions, we strongly urge you to not visit our website and to not use its content.
+        </p>
+      </section>
+
+      <Separator />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Intellectual Property Rights</h2>
+        <p class="mb-4 text-muted-foreground">
+          <strong>All logos displayed on this website are not our intellectual property.</strong> The logos are the property of their respective owners and are protected by copyright, trademark, and other intellectual property laws. Unless otherwise stated, content may be copied only for your personal use. Content should not be modified, performed, published, transferred to anyone else or used for any commercial purpose. If you find that content or information on our website is being used in a way that infringes your (intellectual property) rights, or (intellectual property) rights of someone you are authorised to act on behalf of, please feel free to contact us by sending an email to: <a href="mailto:halfmage@gmail.com" class="text-primary hover:underline">halfmage@gmail.com</a>. We will then assess your submission and act according to what we see fit at our own discretion.
+        </p>
+      </section>
+
+      <Separator />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Disclaimer</h2>
+        <p class="mb-4 text-muted-foreground">
+          logos.travel does not warrant the accuracy, reliability or completeness of any information contained on our sites. To the fullest extent permitted by law, logos.travel, our affiliated companies and/or licensors exclude all liability for any loss or damage suffered by you or any third party whether direct or indirect, incidental or consequential and arising from your use of or access to, or inability to use or access a site, including any loss of data or damage caused by downloading content from our sites.
+        </p>
+        <p class="mb-4 text-muted-foreground">
+          If any provision of these Terms of Use is deemed unlawful, void or unenforceable, the remaining provisions shall continue in full force and effect.
+        </p>
+      </section>
+    </div>
+
+    <Separator />
+
+    <footer class="pt-8">
+      <p class="text-sm text-muted-foreground italic">
+        Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </p>
+    </footer>
+  </article>
+</BaseLayout>

@@ -62,7 +62,7 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
       <Card>
         <CardContent class="flex flex-col items-center">
           <h3 class="text-lg font-semibold mb-4 text-foreground">Original</h3>
-          <div class="p-6 rounded-xl mb-4 flex items-center justify-center min-h-[100px]">
+          <div class="p-6 rounded-xl mb-4 flex items-center justify-center min-h-[100px] border border-muted">
             <img src={`/logos/${logoId}.svg`} alt={`${logoData.name} logo`} class="max-w-full max-h-[100px]" />
           </div>
           <Button href={`/logos/${logoId}.svg`} download={`${logoId}.svg`}>

@@ -1,51 +1,46 @@
-1. **Airlines** ✈️
+# logos.travel — Main Categories
 
-   * All passenger airlines and cargo carriers
+1. **Airlines** ✈️  
+   Passenger and cargo airlines connecting travelers across the globe. Includes national carriers, low-cost airlines, and regional operators that define the world’s aviation landscape and visual identity.
 
-2. **Airports** 🛫
+2. **Airports** 🛫  
+   Major international hubs, regional airports, and airport groups managing global passenger and cargo traffic. Explore the brands behind the gateways that connect destinations worldwide.
 
-   * Airport operators, hubs, and airport groups
+3. **Hotels & Resorts** 🏨  
+   From global hotel chains to boutique resorts, these brands shape the world of accommodation and hospitality. Find logos from every corner of the hotel industry, large and small.
 
-3. **Hotels & Resorts** 🏨
+4. **Cruises & Ferries** 🚢  
+   Cruise lines, ferry companies, and river cruise operators offering ocean and coastal journeys. Discover the maritime travel brands navigating the seas of tourism and leisure.
 
-   * Hotel chains, resort groups, boutique hotels
+5. **Tour Operators & Travel Agencies** 🌍  
+   Online and offline agencies organizing vacations, tours, and package holidays. Includes major tour brands and innovative travel planners serving both individuals and groups.
 
-4. **Cruises & Ferries** 🚢
+6. **Car Rentals & Mobility** 🚗  
+   Car rental companies, ride-sharing platforms, and new-mobility providers offering local and long-distance transport. From classic rental desks to app-based fleets, find their brand identities here.
 
-   * Cruise lines, ferry operators, river cruises
+7. **Tourism Boards & Destinations** 🗺️  
+   National, regional, and city tourism organizations promoting travel experiences and destinations. The official logos representing the world’s most iconic and emerging travel spots.
 
-5. **Tour Operators & Travel Agencies** 🌍
+8. **Travel Tech & Platforms** 💻  
+   Online booking sites, metasearch engines, software providers, and SaaS solutions powering the travel ecosystem. The tech backbone behind global tourism and digital bookings.
 
-   * Online and offline travel agencies, tour brands
+9. **Rail & Public Transport** 🚆  
+   Train operators, metro networks, and public-transport systems moving millions daily. Explore the visual identities of rail and transit companies across continents.
 
-6. **Car Rentals & Mobility** 🚗
+10. **Aviation & Travel Services** 🧳  
+    Companies supporting air travel and tourism operations—ground handlers, caterers, GDS networks, logistics, and service providers essential to smooth global travel.
 
-   * Car hire companies, ride-sharing, mobility services
+11. **Travel Media & Publishers** 📰  
+    Magazines, digital publishers, blogs, and travel content creators showcasing destinations and experiences. The media voices that inspire and inform global travelers.
 
-7. **Tourism Boards & Destinations** 🗺️
+12. **Insurance & Finance** 💳  
+    Travel-insurance brands, payment providers, and fintech platforms enabling safe, seamless journeys. Essential services that protect and power modern travel.
 
-   * National, regional, and city tourism organizations
+13. **Sustainability & Nonprofits** 🌱  
+    Eco-travel initiatives, NGOs, and certification programs promoting responsible and sustainable tourism. Discover organizations driving positive change across the travel industry.
 
-8. **Travel Tech & Platforms** 💻
+14. **Web3 & Innovation** 🪙  
+    Blockchain-powered travel platforms, NFT-based loyalty programs, and crypto-friendly booking sites. Emerging Web3 projects reshaping ownership, payments, and transparency in travel.
 
-   * Booking platforms, metasearch engines, apps, software providers
-
-9. **Rail & Public Transport** 🚆
-
-   * Train operators, metro systems, transport networks
-
-10. **Aviation & Travel Services** 🧳
-
-    * Ground handling, catering, logistics, airport services
-
-11. **Travel Media & Publishers** 📰
-
-    * Magazines, blogs, content creators, travel TV and media brands
-
-12. **Insurance & Finance** 💳
-
-    * Travel insurance companies, payment providers, travel credit cards
-
-13. **Sustainability & Nonprofits** 🌱
-
-    * Eco travel initiatives, foundations, associations
+15. **AI & Emerging Tech** 🤖  
+    Artificial intelligence startups, data platforms, and automation tools transforming travel experiences. From dynamic pricing to personalized itineraries, explore brands redefining how the world travels.

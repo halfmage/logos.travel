@@ -3,9 +3,10 @@
   "description": "Norwegian tour operator providing travel packages and vacation services.",
   "country": "Norway",
   "tags": [
-    "🏖️ Tour Operator",
-    "🚚 Transportation"
+    "Tour Operators & Travel Agencies"
   ],
-  "website": "https://www.bentour.no"
+  "website": "https://www.bentour.no",
+  "added": "2025-11-01",
+  "lastModified": "2025-11-01"
 }
 

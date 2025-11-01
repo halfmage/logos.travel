@@ -3,9 +3,10 @@
   "description": "German tour operator specializing in mountain and sea vacation packages. The name translates to 'Mountains and Sea'.",
   "country": "Germany",
   "tags": [
-    "🏖️ Tour Operator",
-    "🚚 Transportation"
+    "Tour Operators & Travel Agencies"
   ],
-  "website": "https://www.berge-und-meer.de"
+  "website": "https://www.berge-und-meer.de",
+  "added": "2025-11-01",
+  "lastModified": "2025-11-01"
 }
 

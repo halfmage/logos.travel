@@ -76,5 +76,5 @@ a:hover {
 }
 
 a.block:hover {
-  @apply scale-105 transition-transform;
+  
 }

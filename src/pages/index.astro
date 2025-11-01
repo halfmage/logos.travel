@@ -7,11 +7,11 @@ import LogoCard from '../components/LogoCard.astro';
 const logos = await getCollection('logos');
 const latestLogos = logos.sort((a, b) => 
   a.data.name.localeCompare(b.data.name)
-).slice(0, 6);
+).slice(0, 8);
 ---
 
 <BaseLayout 
-  title="Find and Download Travel Brand Logos Instantly"
+  title="logos.travel"
   description="logos.travel is a curated directory of travel-related company logos — from airlines and hotels to tourism boards and travel tech brands. Browse by category, discover clean versions, and download instantly in black or white."
 >
   <!-- Hero Section -->
@@ -27,7 +27,7 @@ const latestLogos = logos.sort((a, b) =>
 
   <!-- Latest Logos -->
   <section class="mb-12">
-    <ol class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <ol class="grid grid-cols-1 md:grid-cols-4 gap-4">
       {latestLogos.map((logo) => (
         <li>
           <LogoCard logo={logo} />

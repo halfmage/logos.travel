@@ -4,8 +4,9 @@
   "country": "Germany",
   "founded": "6 January 1953",
   "tags": [
-    "✈️ Airlines",
-    "🚚 Transportation"
+    "Airlines"
   ],
-  "website": "https://www.lufthansa.com"
+  "website": "https://www.lufthansa.com",
+  "added": "2025-11-01",
+  "lastModified": "2025-11-01"
 }

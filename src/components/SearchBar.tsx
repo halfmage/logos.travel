@@ -21,6 +21,7 @@ export default function SearchBar() {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [failedFavicons, setFailedFavicons] = useState<Set<string>>(new Set());
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -117,6 +118,10 @@ export default function SearchBar() {
     window.location.href = item.url;
   };
 
+  const handleFaviconError = (id: string) => {
+    setFailedFavicons(prev => new Set(prev).add(id));
+  };
+
   return (
     <div className="relative w-full" ref={searchRef}>
       <div className="relative">
@@ -159,7 +164,17 @@ export default function SearchBar() {
               )}
             >
               {item.type === 'logo' ? (
-                <Building2 className="h-4 w-4 text-muted-foreground flex-shrink-0" aria-hidden="true" />
+                item.id && !failedFavicons.has(item.id) ? (
+                  <img 
+                    src={`/logos/${item.id}-favicon.svg`}
+                    alt=""
+                    className="h-4 w-4 flex-shrink-0 object-contain"
+                    aria-hidden="true"
+                    onError={() => item.id && handleFaviconError(item.id)}
+                  />
+                ) : (
+                  <Building2 className="h-4 w-4 text-muted-foreground flex-shrink-0" aria-hidden="true" />
+                )
               ) : (
                 <Tag className="h-4 w-4 text-muted-foreground flex-shrink-0" aria-hidden="true" />
               )}

@@ -1,10 +1,10 @@
 import type { AstroIntegration } from 'astro';
-import { readdirSync, statSync, existsSync, mkdirSync, copyFileSync } from 'fs';
+import { readdirSync, existsSync, mkdirSync, copyFileSync } from 'fs';
 import { join } from 'path';
-import { processLogoVariants } from '../utils/logo-processor';
 
 /**
- * Astro integration that processes logo SVGs and generates variants
+ * Astro integration that copies logo SVG files from company folders to public/logos
+ * Keeps logos organized in src/content/logos/companyNAME/ alongside JSON files
  */
 export function logoProcessor(): AstroIntegration {
   const processLogos = async () => {
@@ -13,6 +13,11 @@ export function logoProcessor(): AstroIntegration {
 
     if (!existsSync(logosDir)) {
       return;
+    }
+
+    // Ensure output directory exists
+    if (!existsSync(outputDir)) {
+      mkdirSync(outputDir, { recursive: true });
     }
 
     // Process each company folder
@@ -24,34 +29,17 @@ export function logoProcessor(): AstroIntegration {
       const companyPath = join(logosDir, companyFolder);
       const files = readdirSync(companyPath);
       
-      // Find the main SVG file (same name as folder)
-      const svgFile = files.find(file => file === `${companyFolder}.svg`);
+      // Copy all SVG files from the company folder to public/logos
+      const svgFiles = files.filter(file => file.endsWith('.svg'));
       
-      if (svgFile) {
-        const svgPath = join(companyPath, svgFile);
-        console.log(`Processing logo: ${companyFolder}`);
-        
-        // Copy original SVG to public
-        const originalOutputPath = join(outputDir, `${companyFolder}.svg`);
-        if (!existsSync(outputDir)) {
-          mkdirSync(outputDir, { recursive: true });
-        }
-        copyFileSync(svgPath, originalOutputPath);
-        
-        // Generate variants
-        processLogoVariants(svgPath, outputDir);
+      for (const svgFile of svgFiles) {
+        const sourcePath = join(companyPath, svgFile);
+        const destPath = join(outputDir, svgFile);
+        copyFileSync(sourcePath, destPath);
       }
       
-      // Copy favicon file if it exists
-      const faviconFile = files.find(file => file === `${companyFolder}-favicon.svg`);
-      if (faviconFile) {
-        const faviconPath = join(companyPath, faviconFile);
-        const faviconOutputPath = join(outputDir, `${companyFolder}-favicon.svg`);
-        if (!existsSync(outputDir)) {
-          mkdirSync(outputDir, { recursive: true });
-        }
-        copyFileSync(faviconPath, faviconOutputPath);
-        console.log(`Copied favicon: ${companyFolder}-favicon.svg`);
+      if (svgFiles.length > 0) {
+        console.log(`✓ Copied ${svgFiles.length} logo file(s) for ${companyFolder}`);
       }
     }
   };
@@ -68,3 +56,4 @@ export function logoProcessor(): AstroIntegration {
     },
   };
 }
+

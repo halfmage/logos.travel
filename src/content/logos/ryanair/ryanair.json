@@ -4,9 +4,10 @@
   "country": "Ireland",
   "founded": "1984",
   "tags": [
-    "✈️ Airlines",
-    "🚚 Transportation"
+    "Airlines"
   ],
-  "website": "https://www.ryanair.com"
+  "website": "https://www.ryanair.com",
+  "added": "2025-11-01",
+  "lastModified": "2025-11-01"
 }
 
