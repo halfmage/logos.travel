@@ -9,6 +9,8 @@ const logosCollection = defineCollection({
     founded: z.string().optional(),
     tags: z.array(z.string()).optional(),
     website: z.string().url().optional(),
+    added: z.string().optional(),
+    lastModified: z.string().optional(),
   }),
 });
 

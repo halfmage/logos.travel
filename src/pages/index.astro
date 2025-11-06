@@ -5,9 +5,18 @@ import { Button } from '@/components/ui/button';
 import LogoCard from '../components/LogoCard.astro';
 
 const logos = await getCollection('logos');
-const latestLogos = logos.sort((a, b) => 
-  a.data.name.localeCompare(b.data.name)
-).slice(0, 8);
+const latestLogos = logos
+  .sort((a, b) => {
+    const dateA = new Date(a.data.added || '1970-01-01');
+    const dateB = new Date(b.data.added || '1970-01-01');
+    const dateDiff = dateB.getTime() - dateA.getTime();
+    // If dates are equal, sort alphabetically by name for deterministic ordering
+    if (dateDiff === 0) {
+      return a.data.name.localeCompare(b.data.name);
+    }
+    return dateDiff; // Most recent first
+  })
+  .slice(0, 8);
 ---
 
 <BaseLayout 

@@ -26,6 +26,12 @@
           "type": "string",
           "format": "uri"
         },
+        "added": {
+          "type": "string"
+        },
+        "lastModified": {
+          "type": "string"
+        },
         "$schema": {
           "type": "string"
         }
