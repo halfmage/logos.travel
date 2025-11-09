@@ -4,6 +4,8 @@ import BaseLayout from '../../layouts/Base.astro';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { extractColorsFromSVG } from '@/utils/colorExtractor';
+import { join } from 'path';
 
 // Helper function to slugify tags
 function slugifyTag(tag: string): string {
@@ -37,6 +39,15 @@ const { logo } = Astro.props;
 // Extract just the folder name from nested IDs (e.g., "lufthansa/lufthansa" -> "lufthansa")
 const logoId = logo.id.includes('/') ? logo.id.split('/')[0] : logo.id;
 const logoData = logo.data;
+
+// Extract colors from the default logo SVG
+const svgPath = join(process.cwd(), 'src/content/logos', logoId, `${logoId}.svg`);
+let colors: string[] = [];
+try {
+  colors = extractColorsFromSVG(svgPath);
+} catch (error) {
+  console.error(`Failed to extract colors for ${logoId}:`, error);
+}
 
 // Get next and previous logos
 const allLogos = await getCollection('logos');
@@ -155,10 +166,10 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
           <CardHeader>
             <CardTitle className="text-2xl">{logoData.name}</CardTitle>
             {logoData.description && (
-              <p class="text-muted-foreground mt-2">{logoData.description}</p>
+              <p class="text-sm text-muted-foreground mt-2 line-clamp-6">{logoData.description}</p>
             )}
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-2">
             {logoData.country && (
               <div>
                 <span class="text-sm font-medium text-muted-foreground">Country</span>
@@ -173,22 +184,44 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
             )}
             {logoData.website && (
               <div>
+                <span class="text-sm font-medium text-muted-foreground">Website</span>
                 <a 
                   href={logoData.website} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:scale-105 transition-transform h-10 px-4 py-2 w-full"
+                  class="text-foreground block hover:underline"
                 >
                   Visit Website
                 </a>
               </div>
             )}
+            {colors.length > 0 && (
+              <div class="pt-2">
+                <h3 class="font-semibold text-sm text-foreground mb-2">Colors</h3>
+                <div class="flex flex-wrap gap-1 color-palette">
+                  {colors.map((color) => (
+                    <div 
+                      class="group relative cursor-pointer color-swatch"
+                      data-color={color}
+                    >
+                      <div 
+                        class="w-8 h-8 rounded-md border-2 border-black/5 hover:scale-110 transition-transform"
+                        style={`background-color: ${color};`}
+                      ></div>
+                      <div class="color-tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-foreground text-background text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                        {color}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             {logoData.tags && logoData.tags.length > 0 && (
               <div class="pt-2">
-                <h3 class="text-lg font-semibold text-foreground mb-4">Tags</h3>
-                <div class="flex flex-wrap gap-3">
+                <h3 class="font-semibold text-sm text-foreground mb-2">Tags</h3>
+                <div class="flex flex-wrap gap-2">
                   {logoData.tags.map((tag) => (
-                    <Badge variant="default" className="text-base px-4 py-2">
+                    <Badge variant="default" className="text-sm px-3 py-1">
                       <a href={`/tags/${slugifyTag(tag)}/`} class="hover:underline">
                         {tag}
                       </a>
@@ -205,6 +238,7 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Copy SVG code functionality
       const copyButtons = document.querySelectorAll('.copy-svg-btn');
       
       copyButtons.forEach((buttonWrapper) => {
@@ -254,6 +288,37 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
               buttonElement.style.backgroundColor = '';
               buttonElement.style.color = '';
               buttonElement.style.borderColor = '';
+            }, 2000);
+          }
+        });
+      });
+
+      // Copy color hex code functionality
+      const colorSwatches = document.querySelectorAll('.color-swatch');
+      colorSwatches.forEach((swatch) => {
+        swatch.addEventListener('click', async () => {
+          const color = swatch.getAttribute('data-color');
+          if (!color) return;
+
+          const tooltip = swatch.querySelector('.color-tooltip') as HTMLElement;
+          if (!tooltip) return;
+
+          try {
+            await navigator.clipboard.writeText(color);
+            const originalText = tooltip.textContent || '';
+            tooltip.textContent = 'Copied!';
+            tooltip.style.opacity = '1';
+            
+            setTimeout(() => {
+              tooltip.textContent = originalText;
+            }, 2000);
+          } catch (error) {
+            console.error('Failed to copy color:', error);
+            tooltip.textContent = 'Error';
+            tooltip.style.opacity = '1';
+            
+            setTimeout(() => {
+              tooltip.textContent = color;
             }, 2000);
           }
         });
