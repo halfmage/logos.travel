@@ -168,7 +168,7 @@ export default function SearchBar() {
                   <img 
                     src={`/logos/${item.id}-favicon.svg`}
                     alt=""
-                    className="h-4 w-4 flex-shrink-0 object-contain"
+                    className="h-6 w-6 flex-shrink-0 object-contain"
                     aria-hidden="true"
                     onError={() => item.id && handleFaviconError(item.id)}
                   />
