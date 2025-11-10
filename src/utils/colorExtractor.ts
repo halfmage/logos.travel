@@ -68,31 +68,126 @@ function normalizeColor(color: string): string | null {
 }
 
 /**
+ * Extracts gradient ID from a URL reference (e.g., "url(#gradientId)" -> "gradientId")
+ */
+function extractGradientId(urlValue: string): string | null {
+  if (!urlValue || typeof urlValue !== 'string') {
+    return null;
+  }
+  const match = urlValue.match(/url\(#([^)]+)\)/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Extracts colors from gradient definitions (linearGradient, radialGradient)
+ */
+function extractColorsFromGradient(gradient: any, colors: Set<string>): void {
+  if (!gradient || typeof gradient !== 'object') {
+    return;
+  }
+
+  // Handle array of stops
+  if (Array.isArray(gradient.stop)) {
+    gradient.stop.forEach((stop: any) => {
+      if (stop['@_stop-color']) {
+        const color = normalizeColor(stop['@_stop-color']);
+        if (color) {
+          colors.add(color);
+        }
+      }
+    });
+  } else if (gradient.stop) {
+    // Single stop
+    if (gradient.stop['@_stop-color']) {
+      const color = normalizeColor(gradient.stop['@_stop-color']);
+      if (color) {
+        colors.add(color);
+      }
+    }
+  }
+}
+
+/**
+ * Finds and extracts colors from gradients in the SVG defs section
+ */
+function extractGradientColors(svgRoot: any, gradientIds: Set<string>, colors: Set<string>): void {
+  if (!svgRoot || typeof svgRoot !== 'object') {
+    return;
+  }
+
+  // Look for defs section
+  const defs = svgRoot.svg?.defs || svgRoot.defs;
+  if (!defs) {
+    return;
+  }
+
+  // Process linearGradient
+  if (defs.linearGradient) {
+    const gradients = Array.isArray(defs.linearGradient) 
+      ? defs.linearGradient 
+      : [defs.linearGradient];
+    
+    gradients.forEach((gradient: any) => {
+      const gradientId = gradient['@_id'];
+      if (gradientId && gradientIds.has(gradientId)) {
+        extractColorsFromGradient(gradient, colors);
+      }
+    });
+  }
+
+  // Process radialGradient
+  if (defs.radialGradient) {
+    const gradients = Array.isArray(defs.radialGradient) 
+      ? defs.radialGradient 
+      : [defs.radialGradient];
+    
+    gradients.forEach((gradient: any) => {
+      const gradientId = gradient['@_id'];
+      if (gradientId && gradientIds.has(gradientId)) {
+        extractColorsFromGradient(gradient, colors);
+      }
+    });
+  }
+}
+
+/**
  * Recursively extracts colors from SVG elements
  */
-function extractColorsFromElement(element: any, colors: Set<string>): void {
+function extractColorsFromElement(element: any, colors: Set<string>, gradientIds: Set<string>): void {
   if (!element || typeof element !== 'object') {
     return;
   }
 
   // Extract fill and stroke attributes
   if (element['@_fill']) {
-    const color = normalizeColor(element['@_fill']);
-    if (color) {
-      colors.add(color);
+    const fillValue = element['@_fill'];
+    const gradientId = extractGradientId(fillValue);
+    if (gradientId) {
+      gradientIds.add(gradientId);
+    } else {
+      const color = normalizeColor(fillValue);
+      if (color) {
+        colors.add(color);
+      }
     }
   }
 
   if (element['@_stroke']) {
-    const color = normalizeColor(element['@_stroke']);
-    if (color) {
-      colors.add(color);
+    const strokeValue = element['@_stroke'];
+    const gradientId = extractGradientId(strokeValue);
+    if (gradientId) {
+      gradientIds.add(gradientId);
+    } else {
+      const color = normalizeColor(strokeValue);
+      if (color) {
+        colors.add(color);
+      }
     }
   }
 
   // Recursively process child elements
   if (Array.isArray(element)) {
-    element.forEach((item) => extractColorsFromElement(item, colors));
+    element.forEach((item) => extractColorsFromElement(item, colors, gradientIds));
   } else {
     // Process all object properties
     for (const key in element) {
@@ -102,7 +197,7 @@ function extractColorsFromElement(element: any, colors: Set<string>): void {
       }
       const value = element[key];
       if (typeof value === 'object' && value !== null) {
-        extractColorsFromElement(value, colors);
+        extractColorsFromElement(value, colors, gradientIds);
       }
     }
   }
@@ -121,9 +216,15 @@ export function extractColorsFromSVG(svgPath: string): string[] {
 
     const parsed = parser.parse(svgContent);
     const colors = new Set<string>();
+    const gradientIds = new Set<string>();
 
-    // Extract colors from the SVG structure
-    extractColorsFromElement(parsed, colors);
+    // Extract colors from the SVG structure and collect gradient references
+    extractColorsFromElement(parsed, colors, gradientIds);
+
+    // Extract colors from gradient definitions
+    if (gradientIds.size > 0) {
+      extractGradientColors(parsed, gradientIds, colors);
+    }
 
     // Sort colors (put black/white at the end, others by brightness)
     const colorArray = Array.from(colors);
