@@ -1,0 +1,12 @@
+{
+  "name": "Delta Air Lines",
+  "description": "Major U.S. airline and one of the world's largest airlines, headquartered in Atlanta, Georgia. Founded in 1925, Delta operates over 5,400 flights daily to 325 destinations in 52 countries. Known for its extensive domestic and international network, premium service, and industry-leading safety record. A founding member of the SkyTeam alliance and one of the oldest operating commercial airlines in the United States.",
+  "country": "United States",
+  "founded": "1925",
+  "tags": [
+    "Airlines"
+  ],
+  "website": "https://www.delta.com",
+  "added": "2025-01-15",
+  "lastModified": "2025-01-15"
+}
