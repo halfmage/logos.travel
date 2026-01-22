@@ -1,18 +1,9 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { slugifyTag, formatTag } from '@/utils/tags';
 
 export const GET: APIRoute = async () => {
   const logos = await getCollection('logos');
-  
-  // Helper function to slugify tags
-  const slugifyTag = (tag: string): string => {
-    return tag
-      .replace(/[^\w\s-]/g, '') // Remove emojis and special chars
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/--+/g, '-');
-  };
 
   // Extract logo IDs and create search entries
   const logoEntries = logos.map((logo) => {
@@ -37,7 +28,7 @@ export const GET: APIRoute = async () => {
   // Create tag entries
   const tagEntries = Array.from(allTags).map((tag) => ({
     type: 'tag' as const,
-    title: tag,
+    title: formatTag(tag),
     url: `/tags/${slugifyTag(tag)}/`,
   }));
 

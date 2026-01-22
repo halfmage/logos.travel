@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { formatTag } from '@/utils/tags';
 
 interface TagWithCount {
   tag: string;
@@ -67,7 +68,7 @@ export default function TagsDropdown({ tags, totalLogos }: TagsDropdownProps) {
                 onClick={() => setIsOpen(false)}
                 role="menuitem"
               >
-                <span className="truncate">{tag}</span>
+                <span className="truncate">{formatTag(tag)}</span>
                 <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded ml-2 flex-shrink-0">
                   {count}
                 </span>

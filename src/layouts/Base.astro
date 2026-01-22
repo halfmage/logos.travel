@@ -5,6 +5,7 @@ import TagsDropdown from '../components/TagsDropdown';
 import MobileMenu from '../components/MobileMenu';
 import { getCollection } from 'astro:content';
 import { AstroFont } from 'astro-font';
+import { slugifyTag, formatTag } from '@/utils/tags';
 import '@/styles/global.css';
 
 interface Props {
@@ -30,14 +31,6 @@ const pageDescription = description || metadata.description;
 
 // Prepare search data
 const logos = await getCollection('logos');
-const slugifyTag = (tag: string): string => {
-  return tag
-    .replace(/[^\w\s-]/g, '') // Remove emojis and special chars
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/--+/g, '-');
-};
 
 const logoEntries = logos.map((logo) => {
   const idParts = logo.id.split('/');
@@ -59,7 +52,7 @@ logos.forEach(logo => {
 
 const tagEntries = Array.from(allTags).map((tag) => ({
   type: 'tag' as const,
-  title: tag,
+  title: formatTag(tag),
   url: `/tags/${slugifyTag(tag)}/`,
 }));
 

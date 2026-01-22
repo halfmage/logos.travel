@@ -5,17 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { extractColorsFromSVG } from '@/utils/colorExtractor';
+import { slugifyTag, formatTag } from '@/utils/tags';
 import { join } from 'path';
-
-// Helper function to slugify tags
-function slugifyTag(tag: string): string {
-  return tag
-    .replace(/[^\w\s-]/g, '') // Remove emojis and special chars
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/--+/g, '-');
-}
 
 export async function getStaticPaths() {
   const logos = await getCollection('logos');
@@ -223,7 +214,7 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
                   {logoData.tags.map((tag) => (
                     <Badge variant="default" className="text-sm px-3 py-1">
                       <a href={`/tags/${slugifyTag(tag)}/`} class="hover:underline">
-                        {tag}
+                        {formatTag(tag)}
                       </a>
                     </Badge>
                   ))}

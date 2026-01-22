@@ -1,0 +1,12 @@
+{
+  "name": "American Airlines",
+  "description": "Major U.S. airline and the largest airline in the world in terms of passengers carried and daily flights. Founded in 1926, American Airlines operates an extensive network with nearly 6,800 flights per day to over 350 destinations across more than 60 countries. Headquartered in Fort Worth, Texas, and a founding member of the Oneworld alliance, the airline serves millions of passengers annually with a comprehensive domestic and international route network.",
+  "country": "United States",
+  "founded": "1926",
+  "tags": [
+    "Airlines"
+  ],
+  "website": "https://www.aa.com",
+  "added": "2025-01-15",
+  "lastModified": "2025-01-15"
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { formatTag } from '@/utils/tags';
 
 interface TagWithCount {
   tag: string;
@@ -146,7 +147,7 @@ export default function MobileMenu({ tags, totalLogos }: MobileMenuProps) {
                       className="block px-4 py-2 text-sm text-foreground hover:bg-accent rounded-md transition-colors flex items-center justify-between"
                       onClick={() => setIsOpen(false)}
                     >
-                      <span className="truncate">{tag}</span>
+                      <span className="truncate">{formatTag(tag)}</span>
                       <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded ml-2 flex-shrink-0">
                         {count}
                       </span>

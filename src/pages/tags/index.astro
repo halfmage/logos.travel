@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/Base.astro';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { slugifyTag, formatTag } from '@/utils/tags';
 
 const logos = await getCollection('logos');
 
@@ -16,16 +17,6 @@ logos.forEach(logo => {
     });
   }
 });
-
-// Create a slug from tag
-function slugifyTag(tag: string): string {
-  return tag
-    .replace(/[^\w\s-]/g, '') // Remove emojis and special chars
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/--+/g, '-');
-}
 
 // Sort tags by count (descending), then alphabetically
 const sortedTags = Array.from(tagMap.entries())
@@ -51,7 +42,7 @@ const sortedTags = Array.from(tagMap.entries())
         <a href={`/tags/${slugifyTag(tag)}/`} class="block">
           <CardContent class="p-6">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xl font-semibold text-foreground">{tag}</span>
+              <span class="text-xl font-semibold text-foreground">{formatTag(tag)}</span>
               <Badge variant="secondary">{count}</Badge>
             </div>
             <p class="text-sm text-muted-foreground">

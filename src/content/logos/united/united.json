@@ -1,0 +1,12 @@
+{
+  "name": "United Airlines",
+  "description": "Major American international airline and one of the largest airlines in the world. Founded in 1926, United Airlines operates extensive domestic and international routes across the United States and to destinations on six continents, serving over 175 million passengers annually to more than 350 destinations. Headquartered in Chicago, Illinois, United is a founding member of the Star Alliance and operates one of the most comprehensive route networks in the aviation industry.",
+  "country": "United States",
+  "founded": "1926",
+  "tags": [
+    "Airlines"
+  ],
+  "website": "https://www.united.com",
+  "added": "2025-01-15",
+  "lastModified": "2025-01-15"
+}
