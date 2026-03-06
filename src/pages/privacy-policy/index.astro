@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/Base.astro';
+import { Separator } from '@/components/ui/separator';
+---
+
+<BaseLayout
+  title="Privacy Policy for logos.travel"
+  description="Privacy policy for logos.travel. Learn how we handle your data, what we collect, and how we protect your privacy when using our travel brand logo directory."
+>
+  <article class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-foreground">Privacy Policy</h1>
+
+    <div class="prose prose-lg">
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Overview</h2>
+        <p class="mb-4 text-muted-foreground">
+          logos.travel is committed to protecting your privacy. This privacy policy explains how we handle information when you visit our website. We believe in transparency and minimal data collection — we only gather what is necessary to improve your experience.
+        </p>
+      </section>
+
+      <Separator class="my-8" />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">What We Collect</h2>
+        <p class="mb-4 text-muted-foreground">
+          logos.travel does not collect personal information such as names, email addresses, or payment details. We do not use cookies for tracking or advertising purposes. We do not require user registration or accounts.
+        </p>
+        <p class="mb-4 text-muted-foreground">
+          We use <a href="https://www.simpleanalytics.com/" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Simple Analytics</a>, a privacy-first analytics tool, to understand general usage patterns. Simple Analytics does not use cookies, does not collect personal data, and respects Do Not Track (DNT) browser settings. All data collected is aggregated and anonymous.
+        </p>
+      </section>
+
+      <Separator class="my-8" />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Third-Party Services</h2>
+        <p class="mb-4 text-muted-foreground">
+          Our website loads fonts from Google Fonts. When you visit logos.travel, your browser may make requests to Google's servers to load these fonts. Google's privacy policy applies to this data transfer. No other third-party services are used on this website.
+        </p>
+      </section>
+
+      <Separator class="my-8" />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Data Storage</h2>
+        <p class="mb-4 text-muted-foreground">
+          logos.travel is a static website. We do not operate databases that store user information. All content is served as static files, and no server-side processing of user data takes place.
+        </p>
+      </section>
+
+      <Separator class="my-8" />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Your Rights</h2>
+        <p class="mb-4 text-muted-foreground">
+          Since we do not collect personal data, there is no personal information to access, modify, or delete. If you have any questions or concerns about your privacy while using logos.travel, please contact us.
+        </p>
+      </section>
+
+      <Separator class="my-8" />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Changes to This Policy</h2>
+        <p class="mb-4 text-muted-foreground">
+          We may update this privacy policy from time to time. Any changes will be reflected on this page. We encourage you to review this page periodically.
+        </p>
+      </section>
+    </div>
+
+    <Separator class="my-8" />
+
+    <footer class="pt-8">
+      <p class="text-sm text-muted-foreground italic">
+        Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </p>
+    </footer>
+  </article>
+</BaseLayout>

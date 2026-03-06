@@ -28,6 +28,7 @@ const metadata: Metadata = {
 const { title, description } = Astro.props;
 const pageTitle = title ? `${title} — logos.travel` : 'logos.travel — Find and Download Travel Brand Logos Instantly';
 const pageDescription = description || metadata.description;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 // Prepare search data
 const logos = await getCollection('logos');
@@ -92,6 +93,12 @@ const searchData = {
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL.href} />
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" href="/favicon.svg" />
@@ -99,7 +106,7 @@ const searchData = {
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:url" content={metadata.url} />
+    <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:type" content="website" />
     <meta property="og:image" content={`${metadata.url}social.jpg`} />
     <meta property="og:image:width" content="1200" />
@@ -194,6 +201,12 @@ const searchData = {
               <a href="/about/" class="text-sm hover:underline">About</a>
             </li>
             <li>
+              <a href="/contact/" class="text-sm hover:underline">Contact</a>
+            </li>
+            <li>
+              <a href="/privacy-policy/" class="text-sm hover:underline">Privacy Policy</a>
+            </li>
+            <li>
               <a href="/terms-of-use/" class="text-sm hover:underline">Terms of Use</a>
             </li>
           </ul>
@@ -206,6 +219,6 @@ const searchData = {
 
     <!-- 100% privacy-first analytics -->
     <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
-    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="Analytics" referrerpolicy="no-referrer-when-downgrade" width="1" height="1"/></noscript>
   </body>
 </html>

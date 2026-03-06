@@ -55,8 +55,10 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
 
 <BaseLayout 
   title={`${logoData.name} Logo`} 
-  description={`Download ${logoData.name} logo in SVG format. Available in original, black, and white versions on logos.travel.`}
+  description={`Download the ${logoData.name} logo in SVG format. Available in original, black, white and favicon versions. Free download on logos.travel.`}
 >
+
+  <h1 class="text-3xl font-bold mb-6 text-foreground">{logoData.name} Logo</h1>
 
   <div class="logo-showcase">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -67,7 +69,7 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
           <CardContent>
             <h3 class="text-xl font-semibold mb-4 text-foreground">Original</h3>
             <div class="w-full mb-6 flex items-center justify-center min-h-[200px] border border-muted rounded-xl px-8 py-16 bg-background">
-              <img src={`/logos/${logoId}.svg`} alt={`${logoData.name} logo`} class="w-full max-h-[140px] object-contain" />
+              <img src={`/logos/${logoId}.svg`} alt={`${logoData.name} original logo`} class="w-full max-h-[140px] object-contain" width="400" height="140" />
             </div>
             <div class="flex gap-2">
               <Button href={`/logos/${logoId}.svg`} download={`${logoId}.svg`} className="flex-1">
@@ -89,7 +91,7 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
           <CardContent>
             <h3 class="text-lg font-semibold mb-4 text-foreground">Black</h3>
             <div class="w-full mb-4 flex items-center justify-center min-h-[150px] bg-background dark:bg-foreground border border-muted rounded-xl p-6">
-              <img src={`/logos/${logoId}-black.svg`} alt={`${logoData.name} logo black`} class="w-full max-h-[100px] object-contain" />
+              <img src={`/logos/${logoId}-black.svg`} alt={`${logoData.name} logo in black`} class="w-full max-h-[100px] object-contain" loading="lazy" width="400" height="100" />
             </div>
             <div class="flex gap-2">
               <Button href={`/logos/${logoId}-black.svg`} download={`${logoId}-black.svg`} variant="outline" className="flex-1">
@@ -111,7 +113,7 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
           <CardContent>
             <h3 class="text-lg font-semibold mb-4 text-foreground">White</h3>
             <div class="w-full mb-4 flex items-center justify-center min-h-[150px] bg-foreground dark:bg-background border border-muted rounded-xl p-6">
-              <img src={`/logos/${logoId}-white.svg`} alt={`${logoData.name} logo white`} class="w-full max-h-[100px] object-contain" />
+              <img src={`/logos/${logoId}-white.svg`} alt={`${logoData.name} logo in white`} class="w-full max-h-[100px] object-contain" loading="lazy" width="400" height="100" />
             </div>
             <div class="flex gap-2">
               <Button href={`/logos/${logoId}-white.svg`} download={`${logoId}-white.svg`} variant="outline" className="flex-1">
@@ -133,7 +135,7 @@ const nextLogo = currentIndex < sortedLogos.length - 1 ? sortedLogos[currentInde
           <CardContent>
             <h3 class="text-lg font-semibold mb-4 text-foreground">Favicon</h3>
             <div class="w-full mb-4 flex items-center justify-center min-h-[150px] border border-muted rounded-xl p-6 bg-background">
-              <img src={`/logos/${logoId}-favicon.svg`} alt={`${logoData.name} favicon`} class="w-full max-h-[140px] object-contain" />
+              <img src={`/logos/${logoId}-favicon.svg`} alt={`${logoData.name} favicon icon`} class="w-full max-h-[140px] object-contain" loading="lazy" width="140" height="140" />
             </div>
             <div class="flex gap-2">
               <Button href={`/logos/${logoId}-favicon.svg`} download={`${logoId}-favicon.svg`} variant="outline" className="flex-1">

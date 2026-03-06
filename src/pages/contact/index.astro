@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/Base.astro';
+import { Separator } from '@/components/ui/separator';
+---
+
+<BaseLayout
+  title="Contact logos.travel"
+  description="Get in touch with logos.travel. Report issues, request new logos, or ask questions about our travel brand logo directory."
+>
+  <article class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-foreground">Contact</h1>
+
+    <div class="prose prose-lg">
+      <p class="mb-6 text-muted-foreground">
+        logos.travel is maintained by <a href="https://halfmage.com" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Gerrit Halfmann</a>. If you have questions, suggestions, or need to get in touch, you can reach out via the options below.
+      </p>
+
+      <Separator class="my-8" />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">General Inquiries</h2>
+        <p class="mb-4 text-muted-foreground">
+          For general questions, feedback, or partnership inquiries, send an email to:
+        </p>
+        <p class="mb-4">
+          <a href="mailto:halfmage@gmail.com" class="text-primary hover:underline font-medium">halfmage@gmail.com</a>
+        </p>
+      </section>
+
+      <Separator class="my-8" />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Logo Requests</h2>
+        <p class="mb-4 text-muted-foreground">
+          Missing a travel brand from our directory? We're always looking to expand our collection. Send us the company name and website, and we'll do our best to add it.
+        </p>
+      </section>
+
+      <Separator class="my-8" />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Intellectual Property</h2>
+        <p class="mb-4 text-muted-foreground">
+          If you are a rights holder and believe any content on logos.travel infringes on your intellectual property, please contact us at <a href="mailto:halfmage@gmail.com" class="text-primary hover:underline">halfmage@gmail.com</a> with details. We will review and respond promptly.
+        </p>
+      </section>
+
+      <Separator class="my-8" />
+
+      <section>
+        <h2 class="text-2xl font-semibold mb-4 text-foreground">Bug Reports</h2>
+        <p class="mb-4 text-muted-foreground">
+          Found a broken link, incorrect logo, or technical issue? Please report it via our <a href="https://github.com/halfmage/logos.travel/issues" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">GitHub Issues</a> page or email us directly.
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

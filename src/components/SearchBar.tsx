@@ -141,8 +141,8 @@ export default function SearchBar() {
           className="w-full pl-10 pr-4 py-2 rounded-md border border-input bg-card text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           aria-label="Search companies or tags"
           aria-autocomplete="list"
-          aria-expanded={isOpen}
-          aria-controls="search-results"
+          aria-expanded={isOpen && query.trim().length > 0 && filteredResults.length > 0}
+          aria-controls={isOpen && query.trim().length > 0 && filteredResults.length > 0 ? "search-results" : undefined}
         />
       </div>
 
